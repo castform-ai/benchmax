@@ -182,7 +182,7 @@ def _cmd_runs_status(args: argparse.Namespace) -> int:
     total = run.get("totalSteps")
     print(f"Status:  {run.get('status')}")
     if latest_step is not None and total:
-        print(f"Step:    {latest_step} / {total - 1}")
+        print(f"Step:    {latest_step} / {total}")
     elif latest_step is not None:
         print(f"Step:    {latest_step}")
     if run.get("latestActivityMessage"):

@@ -131,7 +131,7 @@ def test_runs_status_with_progress(monkeypatch, capsys):
     )
     assert runs._cmd_runs_status(_ns(run_id="r1", json=False)) == 0
     out = capsys.readouterr().out
-    assert "active" in out and "4 / 9" in out and "step 4 done" in out
+    assert "active" in out and "4 / 10" in out and "step 4 done" in out
 
 
 def test_runs_scalars_default_mode_prefers_train(monkeypatch, capsys):

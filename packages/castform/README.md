@@ -70,7 +70,7 @@ Trace adapters and `castform.traces.TracesPipeline` ship with the base
 `castform` package; no trace-specific extra is required.
 
 Vector-store integrations ship as their own extras: `castform[chroma]`,
-`castform[pinecone]`, `castform[turbopuffer]`.
+`castform[pinecone]`, `castform[qdrant]`, `castform[turbopuffer]`.
 
 Corpus ingestion, QA generation and trace preparation are Python library
 workflows. Keep their calls in the project's data stage so the preparation is

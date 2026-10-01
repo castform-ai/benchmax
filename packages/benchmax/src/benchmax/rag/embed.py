@@ -1,6 +1,6 @@
 """OpenAI-compatible query embedding for RAG search clients.
 
-The rollout-facing provider search clients (Turbopuffer / Pinecone / Chroma)
+The rollout-facing provider search clients (Turbopuffer / Pinecone / Chroma / Qdrant)
 accept an optional async ``embed_fn``. Wiring one in makes vector / hybrid
 retrieval work regardless of how the user's index was built — turbopuffer
 vector/hybrid (no server-side embed), a pinecone index NOT on the hosted model,

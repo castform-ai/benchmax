@@ -203,7 +203,7 @@ def test_setup_template_rag_uses_generic_seed_and_provider_guidance(tmp_path, mo
             (tmp_path / ".agents" / "skills" / "generate-data" / "SKILL.md").read_text(),
         ]
     )
-    for example in ("neon_rag", "turbopuffer_rag", "chroma_rag", "pinecone_rag"):
+    for example in ("neon_rag", "turbopuffer_rag", "chroma_rag", "pinecone_rag", "qdrant_rag"):
         assert f"benchmax/tree/main/examples/{example}" in guidance
     assert "HostedCorpusSearch" not in (tmp_path / "main.py").read_text()
 

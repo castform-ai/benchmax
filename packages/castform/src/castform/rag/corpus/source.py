@@ -29,6 +29,7 @@ class ChunkSource(Protocol):
         TpufChunkSource: chunks stored and searched in Turbopuffer (BM25/vector/hybrid)
         PineconeChunkSource: chunks stored and searched in Pinecone (vector only)
         ChromaChunkSource: chunks stored and searched in ChromaDB (vector/BM25/hybrid)
+        QdrantChunkSource: chunks stored and searched in Qdrant (BM25/vector/hybrid)
     """
 
     def populate_from_folder(

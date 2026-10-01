@@ -9,5 +9,6 @@
 - [turbopuffer_rag](turbopuffer_rag/) — the same retrieval-training pattern with example-local lexical, vector, and hybrid TurboPuffer search.
 - [chroma_rag](chroma_rag/) — a current dense-vector Chroma Cloud/self-hosted example with explicit embeddings and static capabilities.
 - [pinecone_rag](pinecone_rag/) — a vector-only Pinecone example that targets the current data-plane host API directly.
+- [qdrant_rag](qdrant_rag/) — lexical, vector, and hybrid Qdrant search with server-side BM25 and in-database RRF fusion.
 - [aime](aime/) — a `HarborEnv` where mini-swe agent solves AIME math problem.
 - [harvey](harvey/) — a `HarborEnv`where harvey's native harness is used to solve harvey's LAB legal tasks.

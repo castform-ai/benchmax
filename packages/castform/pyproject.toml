@@ -38,6 +38,7 @@ rag = [
 ]
 chroma = ["chromadb>=1.5.9,<2", "snowballstemmer>=2.2.0"]
 pinecone = ["pinecone>=9.1.0,<10"]
+qdrant = ["qdrant-client>=1.17.1,<2"]
 turbopuffer = ["turbopuffer>=2.6.0,<3"]
 
 [dependency-groups]

@@ -589,16 +589,6 @@ async def test_model_authored_tool_errors_are_returned_to_the_model() -> None:
             "type": "function",
             "function": {"name": "divide", "arguments": '{"left":6,"right":3}'},
         },
-        {
-            "id": "invalid-json-call",
-            "type": "function",
-            "function": {"name": "multiply", "arguments": "{invalid"},
-        },
-        {
-            "id": "non-object-call",
-            "type": "function",
-            "function": {"name": "multiply", "arguments": "[6,7]"},
-        },
     ]
 
     def respond(session_id, call_index, body):
@@ -609,15 +599,9 @@ async def test_model_authored_tool_errors_are_returned_to_the_model() -> None:
                 tool_calls=tool_calls,
             )
 
-        tool_messages = body["messages"][-3:]
-        assert [message["tool_call_id"] for message in tool_messages] == [
-            "unknown-call",
-            "invalid-json-call",
-            "non-object-call",
-        ]
-        assert tool_messages[0]["content"] == "Unknown tool: divide"
-        assert tool_messages[1]["content"].startswith("Invalid JSON tool arguments:")
-        assert tool_messages[2]["content"] == "Tool arguments must be a JSON object."
+        tool_message = body["messages"][-1]
+        assert tool_message["tool_call_id"] == "unknown-call"
+        assert tool_message["content"] == "Unknown tool: divide"
         return 200, completion_response(content="42")
 
     example = Example(
@@ -634,6 +618,47 @@ async def test_model_authored_tool_errors_are_returned_to_the_model() -> None:
 
     assert outcomes["rollout-1"].rewards == {"correctness": 1.0}
     assert env.tool_calls == []
+
+
+@pytest.mark.parametrize("arguments", ["{invalid", "[6,7]"])
+async def test_malformed_tool_arguments_end_the_rollout_before_another_model_call(
+    arguments: str,
+) -> None:
+    tool_calls = [
+        {
+            "id": "valid-call",
+            "type": "function",
+            "function": {"name": "multiply", "arguments": '{"left":6,"right":7}'},
+        },
+        {
+            "id": "malformed-call",
+            "type": "function",
+            "function": {"name": "multiply", "arguments": arguments},
+        },
+    ]
+
+    example = Example(
+        id="math-malformed-tool-args",
+        payload={
+            "prompt_messages": [{"role": "user", "content": "Use the tools"}],
+            "answer": "42",
+        },
+    )
+    env = _ToolMathEnv(max_tool_calls=len(tool_calls))
+
+    with LocalModelServer(
+        lambda session_id, call_index, body: (
+            200,
+            completion_response(content=None, finish_reason="tool_calls", tool_calls=tool_calls),
+        )
+    ) as server:
+        outcomes = await env.run_group(_requests(server, example, ["rollout-1"]))
+
+    assert outcomes["rollout-1"].termination_reason == "tool_error"
+    assert outcomes["rollout-1"].rewards == {}
+    assert len(server.requests) == 1
+    assert env.tool_calls == []
+    assert env.reward_calls == []
 
 
 async def test_unexpected_tool_failure_is_empty_logged_and_does_not_cancel_sibling(

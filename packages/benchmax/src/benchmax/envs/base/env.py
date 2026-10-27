@@ -218,6 +218,19 @@ class BaseEnv(Environment[JsonRow, BaseRollout], ABC):
                         termination_reason = _termination_reason(assistant_turn.finish_reason)
                         break
 
+                    # The gateway must re-render this turn on the next request and
+                    # rejects arguments that are not a JSON object, so stop here
+                    # instead of spending a request that can only fail.
+                    if any(_malformed_arguments(tool_call) for tool_call in tool_calls):
+                        termination_reason = "tool_error"
+                        logger.warning(
+                            "base.rollout.tool_failed rollout_id=%s termination_reason=%s: "
+                            "malformed tool-call arguments",
+                            request.rollout_id,
+                            termination_reason,
+                        )
+                        break
+
                     if (
                         self.max_tool_calls is not None
                         and tool_calls_used + len(tool_calls) > self.max_tool_calls
@@ -465,6 +478,15 @@ def _function_tool_calls(
             raise TypeError("BaseEnv supports function tool calls only")
         tool_calls.append(tool_call)
     return tool_calls
+
+
+def _malformed_arguments(tool_call: ChatCompletionMessageFunctionToolCall) -> bool:
+    """Whether a call's arguments fail to decode to a JSON object."""
+
+    try:
+        return not isinstance(json.loads(tool_call.function.arguments or "{}"), dict)
+    except json.JSONDecodeError:
+        return True
 
 
 def _to_assistant_message(

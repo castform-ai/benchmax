@@ -1,0 +1,18 @@
+[project]
+name = "benchmax-example-qdrant-rag"
+version = "0.1.0"
+description = "End-to-end Qdrant RAG environment"
+requires-python = "==3.12.*"
+dependencies = [
+    "castform[qdrant,rag]",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["data", "main", "qdrant_rag_env", "search"]
+
+[dependency-groups]
+dev = ["pytest>=8.4.2", "pytest-asyncio>=1.2.0", "ruff>=0.14.2"]

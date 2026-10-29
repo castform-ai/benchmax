@@ -45,6 +45,7 @@ matching maintained example:
 - `turbopuffer_rag`: https://github.com/castform-ai/benchmax/tree/main/examples/turbopuffer_rag
 - `chroma_rag`: https://github.com/castform-ai/benchmax/tree/main/examples/chroma_rag
 - `pinecone_rag`: https://github.com/castform-ai/benchmax/tree/main/examples/pinecone_rag
+- `qdrant_rag`: https://github.com/castform-ai/benchmax/tree/main/examples/qdrant_rag
 
 Use its `README.md`, `main.py`, `data.py`, `environment.py`, and `search.py` as the
 reference for the provider. Typical data code composes:

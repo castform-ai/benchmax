@@ -11,6 +11,7 @@ _EXTRA_SENTINEL: dict[str, str] = {
     "turbopuffer": "turbopuffer",
     "pinecone": "pinecone",
     "chroma": "chromadb",
+    "qdrant": "qdrant_client",
 }
 
 

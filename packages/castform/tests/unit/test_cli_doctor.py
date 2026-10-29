@@ -56,6 +56,7 @@ def test_json_mode_shape_and_exit(monkeypatch, capsys):
         "turbopuffer": False,
         "pinecone": False,
         "chroma": False,
+        "qdrant": False,
     }
 
 
